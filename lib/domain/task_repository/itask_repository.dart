@@ -1,5 +1,7 @@
-abstract interface class ITaskRepository {
-  Future getTasksToCalculate({required String baseUrl}) async {}
+import 'package:webspark_test_task/domain/task_repository/itask_response.dart';
 
-  Future postTasksSolutions({required String baseUrl}) async {}
+abstract interface class ITaskRepository {
+  Future<ITaskResponse?> fetchTasksToCalculate({required String baseUrl});
+
+  Future postTasksSolutions({required String baseUrl});
 }

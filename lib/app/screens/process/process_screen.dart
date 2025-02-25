@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webspark_test_task/app/common/widgets/main_outlined_button.dart';
 import 'package:webspark_test_task/app/screens/process/process_view_model.dart';
-import 'package:webspark_test_task/app/screens/process/widgets/main_progress_indicator.dart';
+import 'package:webspark_test_task/app/common/widgets/main_progress_indicator.dart';
 import 'package:webspark_test_task/app/screens/process/widgets/percent_indicator.dart';
 import 'package:webspark_test_task/app/utils/process_utils.dart';
 
@@ -40,7 +40,7 @@ class ProcessScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 18, color: Colors.black),
               ),
               PercentIndicator(status: viewModel.status),
-              MainProgressIndicator(status: viewModel.status),
+              MainProgressIndicator(),
               const Spacer(),
               if (viewModel.isCalculationsFinished)
                 MainOutlinedButton(
