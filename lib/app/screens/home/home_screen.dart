@@ -31,7 +31,10 @@ class HomeScreen extends StatelessWidget {
               shouldShowErrorMessage: viewModel.shouldShowErrorMessage,
             ),
             const Spacer(),
-            MainOutlinedButton(onPressed: () {}, buttonText: _buttonTitle),
+            MainOutlinedButton(
+              buttonText: _buttonTitle,
+              onPressed: viewModel.onStartProcessButtonPressed,
+            ),
           ],
         ),
       ),

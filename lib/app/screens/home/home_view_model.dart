@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:webspark_test_task/app/routing/route_constatnts.dart';
+import 'package:webspark_test_task/app/screens/process/process_factory.dart';
 import 'package:webspark_test_task/domain/routing/inavigation_util.dart';
 
 class HomeViewModel extends ChangeNotifier {
@@ -8,11 +10,15 @@ class HomeViewModel extends ChangeNotifier {
   final INavigationUtil _navigationUtil;
 
   String _url = '';
-  bool shouldShowErrorMessage = false;
+  bool _isUrlValid = false;
+  bool _shouldShowErrorMessage = false;
+
+  bool get shouldShowErrorMessage => _shouldShowErrorMessage;
 
   void onUrlEntered(String? url) {
-    if ((url == null || url.isEmpty) && shouldShowErrorMessage) {
-      shouldShowErrorMessage = false;
+    if ((url == null || url.isEmpty) && !_isUrlValid) {
+      _shouldShowErrorMessage = false;
+      _isUrlValid = false;
       updateUI();
     }
   }
@@ -25,13 +31,24 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   void _validateUrl(String url) {
-    if (url.startsWith('https://flutter.webspark.dev')) {
-      url = url;
-      shouldShowErrorMessage = false;
+    if (url == 'https://flutter.webspark.dev/') {
+      _url = url;
+      _isUrlValid = true;
+      _shouldShowErrorMessage = !_isUrlValid;
     } else {
-      shouldShowErrorMessage = true;
+      _isUrlValid = false;
+      _shouldShowErrorMessage = !_isUrlValid;
     }
     updateUI();
+  }
+
+  void onStartProcessButtonPressed() {
+    if (_isUrlValid) {
+      _navigationUtil.navigateTo(
+        routeProcess,
+        data: ProcessRoutingArguments(baseUrl: _url),
+      );
+    }
   }
 
   void updateUI() {
