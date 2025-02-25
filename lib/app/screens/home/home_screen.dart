@@ -33,6 +33,7 @@ class HomeScreen extends StatelessWidget {
             const Spacer(),
             MainOutlinedButton(
               buttonText: _buttonTitle,
+              isLoading: viewModel.isLoading,
               onPressed: viewModel.onStartProcessButtonPressed,
             ),
           ],

@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:http/http.dart';
+import 'package:webspark_test_task/data/task_repository/task_response.dart';
 import 'package:webspark_test_task/domain/task_repository/itask_repository.dart';
+import 'package:webspark_test_task/domain/task_repository/itask_response.dart';
 
 const String _urlSubPath = '/flutter/api';
 
@@ -9,10 +13,16 @@ class TaskRepository implements ITaskRepository {
   final Client _client;
 
   @override
-  Future getTasksToCalculate({required String baseUrl}) async {
+  Future<ITaskResponse?> fetchTasksToCalculate({required String baseUrl}) async {
     try {
       final Uri url = Uri.https(baseUrl, _urlSubPath);
       final Response response = await _client.get(url);
+
+      if (response.statusCode == 200) {
+        return TaskResponse.fromJson(jsonDecode(response.body));
+      }
+
+      return null;
     } catch (_) {
       rethrow;
     }
