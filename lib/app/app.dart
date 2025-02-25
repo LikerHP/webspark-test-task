@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:webspark_test_task/app/routing/route_constatnts.dart';
 import 'package:webspark_test_task/app/routing/routing.dart';
+import 'package:webspark_test_task/app/screens/home/home_factory.dart';
 import 'package:webspark_test_task/domain/routing/inavigation_util.dart';
 
 const String appTitle = 'Webspark Test Task';
@@ -16,10 +16,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
       ),
-      initialRoute: routeHome,
       onGenerateRoute:
           (RouteSettings settings) => Routing.onGenerateRoute(settings),
       navigatorKey: Provider.of<INavigationUtil>(context).navigatorKey,
+      home: HomeFactory.build(),
     );
   }
 }
