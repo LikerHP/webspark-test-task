@@ -12,6 +12,4 @@ abstract class INavigationUtil {
   });
 
   void navigateBack({data});
-
-  void navigateBackUntilNamed(String named);
 }

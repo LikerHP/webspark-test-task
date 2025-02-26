@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:webspark_test_task/app/routing/route_constatnts.dart';
 import 'package:webspark_test_task/app/screens/home/home_factory.dart';
 import 'package:webspark_test_task/app/screens/process/process_factory.dart';
+import 'package:webspark_test_task/app/screens/result/result_factory.dart';
 
 class Routing {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -10,6 +11,8 @@ class Routing {
         return _buildHomeScreen(settings);
       case routeProcess:
         return _buildProcessScreen(settings);
+      case routeResultList:
+        return _buildResultListScreen(settings);
       default:
         return MaterialPageRoute(
           builder: (BuildContext context) {
@@ -38,6 +41,16 @@ class Routing {
       builder: (BuildContext context) {
         return ProcessFactory.build(
           settings.arguments as ProcessRoutingArguments,
+        );
+      },
+    );
+  }
+
+  static MaterialPageRoute _buildResultListScreen(RouteSettings settings) {
+    return MaterialPageRoute(
+      builder: (BuildContext context) {
+        return ResultFactory.build(
+          settings.arguments as ResultRoutingArguments,
         );
       },
     );

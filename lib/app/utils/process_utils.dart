@@ -5,9 +5,13 @@ class ProcessUtils {
   static String getMessageForProgress({
     required int progress,
     bool isUploadingData = false,
+    bool isErrorOccurred = false,
   }) {
-    if(isUploadingData){
+    if (isUploadingData) {
       return 'Uploading results to server';
+    }
+    if(isErrorOccurred){
+      return 'Oops, An error occurred during uploading results to server';
     }
     if (progress >= 100) {
       return 'All calculations has finished, you can send your results to server';

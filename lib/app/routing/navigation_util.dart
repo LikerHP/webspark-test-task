@@ -24,15 +24,6 @@ class NavigationUtil extends INavigationUtil {
   }
 
   @override
-  void navigateBackUntilNamed(String named) {
-    navigatorKey.currentState?.popUntil((route) {
-      if (named == routeHome && route.settings.name == '/') return true;
-      if (route.isFirst && route.settings.name == '/') return true;
-      return named == route.settings.name;
-    });
-  }
-
-  @override
   Future navigateTo<T extends Object?>(
     String routeName, {
     bool allowBackNavigation = true,
