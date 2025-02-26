@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:webspark_test_task/app/utils/process_utils.dart';
 
 class PercentIndicator extends StatelessWidget {
-  const PercentIndicator({
-    required this.status,
-    super.key,
-  });
+  const PercentIndicator({required this.value, super.key});
 
-  final ProcessStatus status;
+  final int value;
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      '${ProcessUtils.getPercentageByStatus(status)}%',
-      style: TextStyle(fontSize: 26),
-    );
+    return Text('$value%', style: TextStyle(fontSize: 26));
   }
 }
