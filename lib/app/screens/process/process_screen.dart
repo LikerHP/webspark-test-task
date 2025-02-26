@@ -35,19 +35,25 @@ class ProcessScreen extends StatelessWidget {
               Spacer(),
               Text(
                 ProcessUtils.getMessageForProgress(
-                  viewModel.processingProgress,
+                  progress: viewModel.processingProgress,
+                  isUploadingData: viewModel.isUploadingResults,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 style: TextStyle(fontSize: 18, color: Colors.black),
               ),
-              PercentIndicator(value: viewModel.processingProgress),
+              if (!viewModel.isUploadingResults)
+                PercentIndicator(value: viewModel.processingProgress),
               MainProgressIndicator(
-                value: viewModel.processingProgress.ceil() / 100,
+                value:
+                    viewModel.isUploadingResults
+                        ? null
+                        : viewModel.processingProgress.ceil() / 100,
               ),
               const Spacer(),
               if (viewModel.processingProgress >= 100)
                 MainOutlinedButton(
+                  isActive: !viewModel.isUploadingResults,
                   buttonText: _buttonTitle,
                   onPressed: viewModel.onSendResultsButtonPressed,
                 ),

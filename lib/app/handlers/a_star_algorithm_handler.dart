@@ -1,6 +1,8 @@
 import 'package:collection/collection.dart';
+import 'package:webspark_test_task/app/utils/process_utils.dart';
 import 'package:webspark_test_task/data/task/grid.dart';
 import 'package:webspark_test_task/data/task/point.dart';
+import 'package:webspark_test_task/data/task/solution.dart';
 import 'package:webspark_test_task/data/task/task.dart';
 
 class AStarAlgorithmHandler {
@@ -11,12 +13,18 @@ class AStarAlgorithmHandler {
 
   int _totalTasksCompleted = 0;
 
-  Map<String, List<Point>?> startAlgorithm() {
-    final Map<String, List<Point>?> solutions = {};
+  List<Solution> startAlgorithm() {
+    final List<Solution> solutions = [];
 
     for (Task task in tasks) {
       (String id, List<Point>? solution) taskSolution = _startAlgorithm(task);
-      solutions.addAll({taskSolution.$1: taskSolution.$2});
+      solutions.add(
+        Solution(
+          id: taskSolution.$1,
+          path: ProcessUtils.getPathFromList(taskSolution.$2),
+          steps: ProcessUtils.getStepsFromList(taskSolution.$2),
+        ),
+      );
     }
 
     return solutions;
@@ -150,7 +158,7 @@ class AStarAlgorithmHandler {
       currentPoint = previousPoint[currentPoint]!;
       path.add(currentPoint);
     }
-    return (id, path.reversed.toList());
+    return (id, path);
   }
 
   void _updateProgress(int nodesExplored, int estimatedTotal) {

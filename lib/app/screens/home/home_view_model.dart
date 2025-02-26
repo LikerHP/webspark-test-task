@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:webspark_test_task/app/routing/route_constatnts.dart';
 import 'package:webspark_test_task/app/screens/process/process_factory.dart';
+import 'package:webspark_test_task/app/utils/url_utils.dart';
 import 'package:webspark_test_task/domain/routing/inavigation_util.dart';
 import 'package:webspark_test_task/domain/task_repository/itask_repository.dart';
 import 'package:webspark_test_task/domain/task_repository/itask_response.dart';
@@ -59,7 +60,7 @@ class HomeViewModel extends ChangeNotifier {
     updateUI();
     try {
       final ITaskResponse? taskResponse = await _taskRepository
-          .fetchTasksToCalculate(baseUrl: _trimUrl(_url));
+          .fetchTasksToCalculate(baseUrl: UrlUtils.trimUrl(_url));
 
       if (taskResponse != null) {
         if (taskResponse.isError) {
@@ -67,6 +68,9 @@ class HomeViewModel extends ChangeNotifier {
           _isLoading = false;
           updateUI();
         } else {
+          _isLoading = false;
+          updateUI();
+
           _navigationUtil.navigateTo(
             routeProcess,
             data: ProcessRoutingArguments(
@@ -79,14 +83,6 @@ class HomeViewModel extends ChangeNotifier {
     } catch (e) {
       _isLoading = false;
     }
-  }
-
-  /// Needed only for getting raw url to create [Uri.https]
-  String _trimUrl(String url) {
-    if (url.contains('https://')) {
-      return url.replaceAll('https://', '');
-    }
-    return url;
   }
 
   void updateUI() {
