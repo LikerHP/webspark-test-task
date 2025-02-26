@@ -6,9 +6,11 @@ class MainOutlinedButton extends StatelessWidget {
     required this.onPressed,
     required this.buttonText,
     this.isLoading = false,
+    this.isActive = true,
     super.key,
   });
 
+  final bool isActive;
   final bool isLoading;
   final String buttonText;
   final VoidCallback onPressed;
@@ -16,9 +18,15 @@ class MainOutlinedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      onPressed: onPressed,
+      onPressed: () {
+        if (isActive) {
+          onPressed.call();
+        }
+      },
       style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(Colors.lightBlueAccent),
+        backgroundColor: WidgetStatePropertyAll(
+          isActive ? Colors.lightBlueAccent : Colors.grey.shade500,
+        ),
         side: WidgetStatePropertyAll(
           BorderSide(color: Colors.indigoAccent.shade100, width: 2),
         ),

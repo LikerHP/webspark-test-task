@@ -13,7 +13,9 @@ class TaskRepository implements ITaskRepository {
   final Client _client;
 
   @override
-  Future<ITaskResponse?> fetchTasksToCalculate({required String baseUrl}) async {
+  Future<ITaskResponse?> fetchTasksToCalculate({
+    required String baseUrl,
+  }) async {
     try {
       final Uri url = Uri.https(baseUrl, _urlSubPath);
       final Response response = await _client.get(url);
@@ -29,10 +31,20 @@ class TaskRepository implements ITaskRepository {
   }
 
   @override
-  Future postTasksSolutions({required String baseUrl}) async {
+  Future postTasksSolutions({
+    required String baseUrl,
+    required List<Map<String, dynamic>> body,
+  }) async {
     try {
       final Uri url = Uri.https(baseUrl, _urlSubPath);
-      final Response response = await _client.post(url, body: {});
+      final Response response = await _client.post(
+        url,
+        body: jsonEncode(body),
+        headers: {"Content-Type": "application/json"},
+      );
+      var encodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
+
+      return encodedResponse;
     } catch (_) {
       rethrow;
     }
