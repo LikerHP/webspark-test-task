@@ -34,15 +34,19 @@ class ProcessScreen extends StatelessWidget {
             children: [
               Spacer(),
               Text(
-                ProcessUtils.getMessageForStatus(viewModel.status),
+                ProcessUtils.getMessageForProgress(
+                  viewModel.processingProgress,
+                ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 style: TextStyle(fontSize: 18, color: Colors.black),
               ),
-              PercentIndicator(status: viewModel.status),
-              MainProgressIndicator(),
+              PercentIndicator(value: viewModel.processingProgress),
+              MainProgressIndicator(
+                value: viewModel.processingProgress.ceil() / 100,
+              ),
               const Spacer(),
-              if (viewModel.isCalculationsFinished)
+              if (viewModel.processingProgress >= 100)
                 MainOutlinedButton(
                   buttonText: _buttonTitle,
                   onPressed: viewModel.onSendResultsButtonPressed,

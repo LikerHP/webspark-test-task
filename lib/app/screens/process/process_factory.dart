@@ -19,6 +19,7 @@ class ProcessFactory {
     return ChangeNotifierProvider<ProcessViewModel>(
       create:
           (BuildContext context) => ProcessViewModel(
+            routingArgs: args,
             navigationUtil: context.read<INavigationUtil>(),
             taskRepository: TaskRepository(client: http.Client()),
           ),
