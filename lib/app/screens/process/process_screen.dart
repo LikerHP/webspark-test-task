@@ -38,12 +38,13 @@ class ProcessScreen extends StatelessWidget {
                   progress: viewModel.processingProgress,
                   isErrorOccurred: viewModel.isErrorOccurred,
                   isUploadingData: viewModel.isUploadingResults,
+                  isIncorrectResult: viewModel.isIncorrectResult,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 style: TextStyle(fontSize: 18, color: Colors.black),
               ),
-              if (!viewModel.isUploadingResults || !viewModel.isErrorOccurred)
+              if (viewModel.shouldShowPercents)
                 PercentIndicator(value: viewModel.processingProgress),
               MainProgressIndicator(
                 value:

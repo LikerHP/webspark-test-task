@@ -167,9 +167,8 @@ class AStarAlgorithmHandler {
     if (currentTaskProgress > 1.0) currentTaskProgress = 1.0;
 
     double overallPercentage =
-        ((_totalTasksCompleted + currentTaskProgress) / tasks.length * 100) +
-        33.3;
+        ((_totalTasksCompleted + currentTaskProgress) / tasks.length * 100) - 17;
 
-    progressCallback(overallPercentage);
+    progressCallback(overallPercentage < 0 ? 0 : overallPercentage);
   }
 }

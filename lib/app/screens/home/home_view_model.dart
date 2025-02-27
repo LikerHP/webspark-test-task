@@ -56,6 +56,8 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   Future<void> onStartProcessButtonPressed() async {
+    if (isLoading) return;
+
     _isLoading = true;
     updateUI();
     try {

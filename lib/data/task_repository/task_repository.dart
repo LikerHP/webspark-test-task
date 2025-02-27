@@ -50,7 +50,7 @@ class TaskRepository implements ITaskRepository {
           jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
 
       if (response.statusCode == 400 || response.statusCode == 500) {
-        return ErrorUploadResponse.fromJson(encodedResponse);
+        throw ErrorUploadResponse.fromJson(encodedResponse);
       }
       if (response.statusCode == 200) {
         return SuccessfulUploadResponse.fromJson(encodedResponse);

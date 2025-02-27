@@ -14,6 +14,8 @@ import 'package:webspark_test_task/domain/routing/inavigation_util.dart';
 import 'package:webspark_test_task/domain/task_repository/itask_repository.dart';
 import 'package:webspark_test_task/domain/task_repository/iupload_response.dart';
 
+const String _incorrectResultMessage = 'Result incorrect';
+
 class ProcessViewModel extends ChangeNotifier {
   ProcessViewModel({
     required INavigationUtil navigationUtil,
@@ -41,6 +43,12 @@ class ProcessViewModel extends ChangeNotifier {
   bool _isErrorOccurred = false;
 
   bool get isErrorOccurred => _isErrorOccurred;
+
+  bool get shouldShowPercents => !_isErrorOccurred && !_isUploadingResults;
+
+  bool _isIncorrectResult = false;
+
+  bool get isIncorrectResult => _isIncorrectResult;
 
   void _updateProgressCallback(double progress) {
     _processingProgress = progress;
@@ -82,6 +90,13 @@ class ProcessViewModel extends ChangeNotifier {
 
         _navigateToAnswerScreenList(response);
       }
+    } on ErrorUploadResponse catch (e) {
+      if (e.message == _incorrectResultMessage) {
+        _isIncorrectResult = true;
+        _isErrorOccurred = true;
+        _isUploadingResults = false;
+      }
+      updateUI();
     } catch (e) {
       _isErrorOccurred = true;
       _isUploadingResults = false;
@@ -108,9 +123,9 @@ class ProcessViewModel extends ChangeNotifier {
     for (Solution solution in solutions) {
       reversed.add(
         Solution(
-            id: solution.id,
-            steps: solution.steps,
-            path: solution.path.split('->').reversed.toList().join('->'),
+          id: solution.id,
+          steps: solution.steps,
+          path: solution.path.split('->').reversed.toList().join('->'),
         ),
       );
     }
