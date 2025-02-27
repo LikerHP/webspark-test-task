@@ -14,6 +14,8 @@ import 'package:webspark_test_task/domain/routing/inavigation_util.dart';
 import 'package:webspark_test_task/domain/task_repository/itask_repository.dart';
 import 'package:webspark_test_task/domain/task_repository/iupload_response.dart';
 
+const String _incorrectResultMessage = 'Result incorrect';
+
 class ProcessViewModel extends ChangeNotifier {
   ProcessViewModel({
     required INavigationUtil navigationUtil,
@@ -41,6 +43,12 @@ class ProcessViewModel extends ChangeNotifier {
   bool _isErrorOccurred = false;
 
   bool get isErrorOccurred => _isErrorOccurred;
+
+  bool get shouldShowPercents => !_isErrorOccurred && !_isUploadingResults;
+
+  bool _isIncorrectResult = false;
+
+  bool get isIncorrectResult => _isIncorrectResult;
 
   void _updateProgressCallback(double progress) {
     _processingProgress = progress;
@@ -77,11 +85,18 @@ class ProcessViewModel extends ChangeNotifier {
       }
 
       if (response is SuccessfulUploadResponse) {
-        _isErrorOccurred =  false;
+        _isErrorOccurred = false;
         updateUI();
 
         _navigateToAnswerScreenList(response);
       }
+    } on ErrorUploadResponse catch (e) {
+      if (e.message == _incorrectResultMessage) {
+        _isIncorrectResult = true;
+        _isErrorOccurred = true;
+        _isUploadingResults = false;
+      }
+      updateUI();
     } catch (e) {
       _isErrorOccurred = true;
       _isUploadingResults = false;
@@ -95,9 +110,26 @@ class ProcessViewModel extends ChangeNotifier {
       data: ResultRoutingArguments(
         tasks: _routingArgs.tasks,
         answers: answers.results,
-        solutions: _solutions,
+        solutions: _reverseSolutionsPaths(_solutions),
       ),
     );
+  }
+
+  /// Personal note: if algorithm reconstruction function returns reversed list of paths
+  /// this answer treats like incorrect, but without reversion - answers are correct.
+  /// This function needed to reverse paths to get the correct path and grid UI representation
+  List<Solution> _reverseSolutionsPaths(List<Solution> solutions) {
+    final List<Solution> reversed = [];
+    for (Solution solution in solutions) {
+      reversed.add(
+        Solution(
+          id: solution.id,
+          steps: solution.steps,
+          path: solution.path.split('->').reversed.toList().join('->'),
+        ),
+      );
+    }
+    return reversed;
   }
 
   void updateUI() {

@@ -32,17 +32,17 @@ class PreviewViewModel extends ChangeNotifier {
 
     (int column, int row) coordinates = _getCoordinates(index);
 
-    if (_routingArgs.startPoint.x == coordinates.$2 &&
-        _routingArgs.startPoint.y == coordinates.$1) {
+    if (_routingArgs.startPoint.x == coordinates.$1 &&
+        _routingArgs.startPoint.y == coordinates.$2) {
       return Color(0xFF64FFDA);
     }
 
-    if (_routingArgs.endPoint.x == coordinates.$2 &&
-        _routingArgs.endPoint.y == coordinates.$1) {
+    if (_routingArgs.endPoint.x == coordinates.$1 &&
+        _routingArgs.endPoint.y == coordinates.$2) {
       return Color(0xFF009688);
     }
 
-    final String coordinatesString = '(${coordinates.$2},${coordinates.$1})';
+    final String coordinatesString = '(${coordinates.$1},${coordinates.$2})';
     final List<String> splittedPath = _routingArgs.path.split('->');
 
     if (splittedPath.contains(coordinatesString)) {

@@ -9,13 +9,13 @@ class ErrorUploadResponse implements IUploadResponse {
 
   final bool isError;
   final String message;
-  final Map<String, dynamic> data;
+  final dynamic data;
 
   factory ErrorUploadResponse.fromJson(Map<String, dynamic> json) {
     return ErrorUploadResponse(
       isError: json['error'],
       message: json['message'],
-      data: json['data'] as Map<String, dynamic>,
+      data: json['data'],
     );
   }
 }

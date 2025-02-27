@@ -6,9 +6,13 @@ class ProcessUtils {
     required int progress,
     bool isUploadingData = false,
     bool isErrorOccurred = false,
+    bool isIncorrectResult = false,
   }) {
     if (isUploadingData) {
       return 'Uploading results to server';
+    }
+    if(isIncorrectResult){
+      return 'Seems like your results are incorrect';
     }
     if (isErrorOccurred) {
       return 'Oops, An error occurred during uploading results to server';
