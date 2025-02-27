@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webspark_test_task/app/routing/route_constatnts.dart';
 import 'package:webspark_test_task/app/screens/home/home_factory.dart';
+import 'package:webspark_test_task/app/screens/preview/preview_factory.dart';
 import 'package:webspark_test_task/app/screens/process/process_factory.dart';
 import 'package:webspark_test_task/app/screens/result/result_factory.dart';
 
@@ -13,6 +14,8 @@ class Routing {
         return _buildProcessScreen(settings);
       case routeResultList:
         return _buildResultListScreen(settings);
+      case routePreview:
+        return _buildPreviewScreen(settings);
       default:
         return MaterialPageRoute(
           builder: (BuildContext context) {
@@ -52,6 +55,14 @@ class Routing {
         return ResultFactory.build(
           settings.arguments as ResultRoutingArguments,
         );
+      },
+    );
+  }
+
+  static MaterialPageRoute _buildPreviewScreen(RouteSettings settings) {
+    return MaterialPageRoute(
+      builder: (BuildContext context) {
+        return PreviewFactory.build(settings.arguments as PreviewRoutingArgs);
       },
     );
   }
