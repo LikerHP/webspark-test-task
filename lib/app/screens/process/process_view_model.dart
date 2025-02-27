@@ -32,9 +32,9 @@ class ProcessViewModel extends ChangeNotifier {
   final ProcessRoutingArguments _routingArgs;
 
   List<Solution> _solutions = [];
-  double _processingProgress = 0.0;
+  double _displayedProgress = 0.0;
 
-  int get processingProgress => _processingProgress.ceil();
+  int get processingProgress => _displayedProgress.ceil();
 
   bool _isUploadingResults = false;
 
@@ -50,9 +50,11 @@ class ProcessViewModel extends ChangeNotifier {
 
   bool get isIncorrectResult => _isIncorrectResult;
 
-  void _updateProgressCallback(double progress) {
-    _processingProgress = progress;
-    updateUI();
+  void _updateProgressCallback(double progress) async {
+    await Future.delayed(const Duration(milliseconds: 600), () {
+      _displayedProgress = progress;
+      updateUI();
+    });
   }
 
   Future _startCalculations() async {
@@ -62,8 +64,8 @@ class ProcessViewModel extends ChangeNotifier {
     );
 
     /// Waiting for 1 second to give UI the time to draw
-    Future.delayed(const Duration(seconds: 1), () {
-      _solutions = handler.startAlgorithm();
+    await Future.delayed(const Duration(seconds: 1), () async {
+      _solutions = await handler.startAlgorithm();
     });
   }
 

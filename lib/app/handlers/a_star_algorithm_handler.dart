@@ -12,12 +12,15 @@ class AStarAlgorithmHandler {
   final Function(double) progressCallback;
 
   int _totalTasksCompleted = 0;
+  double _previousProgress = 0;
 
-  List<Solution> startAlgorithm() {
+  Future<List<Solution>> startAlgorithm() async {
     final List<Solution> solutions = [];
 
     for (Task task in tasks) {
-      (String id, List<Point>? solution) taskSolution = _startAlgorithm(task);
+      (String id, List<Point>? solution) taskSolution = await _startAlgorithm(
+        task,
+      );
       solutions.add(
         Solution(
           id: taskSolution.$1,
@@ -30,7 +33,7 @@ class AStarAlgorithmHandler {
     return solutions;
   }
 
-  (String id, List<Point>? solution) _startAlgorithm(Task task) {
+  Future<(String id, List<Point>? solution)> _startAlgorithm(Task task) async {
     int exploredPointsAmount = 0;
 
     final Point startPoint = task.startPoint;
@@ -61,7 +64,7 @@ class AStarAlgorithmHandler {
     fScores[startPoint] = _heuristic(startPoint, endPoint);
     openList.add(startPoint);
 
-    _updateProgress(exploredPointsAmount, estimatedTotalPoints);
+    await _updateProgress(exploredPointsAmount, estimatedTotalPoints);
 
     while (openList.isNotEmpty) {
       /// Get the point with the lowest fScore
@@ -70,13 +73,13 @@ class AStarAlgorithmHandler {
       exploredPointsAmount++;
 
       if (exploredPointsAmount % 10 == 0) {
-        _updateProgress(exploredPointsAmount, estimatedTotalPoints);
+        await _updateProgress(exploredPointsAmount, estimatedTotalPoints);
       }
 
       /// If we reached the goal, reconstruct and return the path
       if (currentPoint == endPoint) {
         _totalTasksCompleted++;
-        _updateProgress(exploredPointsAmount, estimatedTotalPoints);
+        await _updateProgress(exploredPointsAmount, estimatedTotalPoints);
 
         final (String id, List<Point>? steps) answer = reconstructPath(
           id: task.id,
@@ -161,14 +164,20 @@ class AStarAlgorithmHandler {
     return (id, path);
   }
 
-  void _updateProgress(int nodesExplored, int estimatedTotal) {
+  Future<void> _updateProgress(int nodesExplored, int estimatedTotal) async {
     /// Emulation of the real percentage of the algorithm execution
     double currentTaskProgress = nodesExplored / estimatedTotal;
     if (currentTaskProgress > 1.0) currentTaskProgress = 1.0;
+    double progressToDisplay = 0;
 
     double overallPercentage =
-        ((_totalTasksCompleted + currentTaskProgress) / tasks.length * 100) - 17;
+        ((_totalTasksCompleted + currentTaskProgress) / tasks.length * 100) -
+        17;
 
-    progressCallback(overallPercentage < 0 ? 0 : overallPercentage);
+    if (_previousProgress < overallPercentage) {
+      _previousProgress = overallPercentage;
+    }
+    progressToDisplay = _previousProgress;
+    await progressCallback(progressToDisplay < 0 ? 0 : progressToDisplay);
   }
 }
