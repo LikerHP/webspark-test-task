@@ -119,9 +119,7 @@ class AStarAlgorithmHandler {
 
     /// Splitting the rows into separate strings
     for (String row in filed) {
-      List<String> rows = [];
-      rows.addAll(row.split(''));
-      splittedRows.add(rows);
+      splittedRows.add(row.split(''));
     }
     amountOfRows = splittedRows.length;
     amountOfColumns = splittedRows.first.length;

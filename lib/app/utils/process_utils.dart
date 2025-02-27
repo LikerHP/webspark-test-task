@@ -10,7 +10,7 @@ class ProcessUtils {
     if (isUploadingData) {
       return 'Uploading results to server';
     }
-    if(isErrorOccurred){
+    if (isErrorOccurred) {
       return 'Oops, An error occurred during uploading results to server';
     }
     if (progress >= 100) {

@@ -22,7 +22,7 @@ class ResultScreen extends StatelessWidget {
           vertical: 16,
         ),
         child: ListView.separated(
-          itemCount: viewModel.tasksAmount,
+          itemCount: viewModel.solutionsLength,
           separatorBuilder: (_, int index) {
             return Container(
               height: 1,
