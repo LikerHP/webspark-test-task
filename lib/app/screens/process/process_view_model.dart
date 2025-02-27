@@ -77,7 +77,7 @@ class ProcessViewModel extends ChangeNotifier {
       }
 
       if (response is SuccessfulUploadResponse) {
-        _isErrorOccurred =  false;
+        _isErrorOccurred = false;
         updateUI();
 
         _navigateToAnswerScreenList(response);
@@ -95,9 +95,26 @@ class ProcessViewModel extends ChangeNotifier {
       data: ResultRoutingArguments(
         tasks: _routingArgs.tasks,
         answers: answers.results,
-        solutions: _solutions,
+        solutions: _reverseSolutionsPaths(_solutions),
       ),
     );
+  }
+
+  /// Personal note: if algorithm reconstruction function returns reversed list of paths
+  /// this answer treats like incorrect, but without reversion - answers are correct.
+  /// This function needed to reverse paths to get the correct path and grid UI representation
+  List<Solution> _reverseSolutionsPaths(List<Solution> solutions) {
+    final List<Solution> reversed = [];
+    for (Solution solution in solutions) {
+      reversed.add(
+        Solution(
+            id: solution.id,
+            steps: solution.steps,
+            path: solution.path.split('->').reversed.toList().join('->'),
+        ),
+      );
+    }
+    return reversed;
   }
 
   void updateUI() {

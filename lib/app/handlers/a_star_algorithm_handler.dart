@@ -75,14 +75,16 @@ class AStarAlgorithmHandler {
 
       /// If we reached the goal, reconstruct and return the path
       if (currentPoint == endPoint) {
-        _updateProgress(exploredPointsAmount, estimatedTotalPoints);
         _totalTasksCompleted++;
+        _updateProgress(exploredPointsAmount, estimatedTotalPoints);
 
-        return reconstructPath(
+        final (String id, List<Point>? steps) answer = reconstructPath(
           id: task.id,
           currentPoint: currentPoint,
           previousPoint: previousPoint,
         );
+
+        return answer;
       }
 
       closedSet.add(currentPoint);
@@ -125,10 +127,10 @@ class AStarAlgorithmHandler {
     amountOfColumns = splittedRows.first.length;
 
     final List<Point> blockedPoints = [];
-    for (int i = 0; i < splittedRows.length; i++) {
-      for (int j = 0; j < splittedRows[i].length; j++) {
-        if (splittedRows[i][j] == 'X') {
-          blockedPoints.add(Point(x: i, y: j));
+    for (int x = 0; x < splittedRows.length; x++) {
+      for (int y = 0; y < splittedRows[x].length; y++) {
+        if (splittedRows[y][x] == 'X') {
+          blockedPoints.add(Point(x: y, y: x));
         }
       }
     }
